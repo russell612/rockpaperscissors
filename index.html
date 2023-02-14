@@ -13,6 +13,7 @@
 
             function playRound(playerSelection, computerSelection) {
                 let ans; 
+                let res;
                 if (playerSelection.toUpperCase() === "ROCK") {
                     ans = 1;
                 }
@@ -26,18 +27,36 @@
                     return "Wrong Input!"
                 }
                 const results = [[0,1,-1],[-1,0,1],[1,-1,0]]
-                const result = results[ans][computerSelection]
+                const result = results[computerSelection][ans]
+                
+                if (computerSelection === 1) {
+                    res = "Rock"
+                }
+                else if (computerSelection === 2) {
+                    res = "Paper"
+                }
+                else {
+                    res = "Scissors"
+                }
+
 
                 if (result === 1) {
-                    return "You won!"
+                    return `You won! You played ${playerSelection}, they played ${res}`
                 }
                 else if (result === 0) {
                     return "You got the same answer"
                 }
                 else {
-                    return "You lost"
+                    return `You lost. You played ${playerSelection}, they played ${res}`
                 }
             }
+
+            function game() {
+                for (let i = 0; i < 5; i++ ) {
+                    console.log(playRound(prompt(), getComputerChoice()));
+                }
+            }
+            game();
         </script>
     </body>
 </html>

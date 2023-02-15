@@ -5,6 +5,14 @@
         <title>Rock Paper Scissors</title>
     </head>
     <body>
+        <button id="scissors">Play Scissors</button>
+        <button id="paper">Play Paper</button>
+        <button id="rock">Play rock</button>
+        <div id="answer-container">
+            <div id="current-result"></div>
+            <div id="player-score">0</div>
+            <div id="computer-score">0</div>
+        </div>
         <script>
             function getComputerChoice() {;
                 const random = Math.floor(Math.random() * 3);
@@ -15,24 +23,25 @@
                 let ans; 
                 let res;
                 if (playerSelection.toUpperCase() === "ROCK") {
-                    ans = 1;
+                    ans = 0;
                 }
                 else if (playerSelection.toUpperCase() === "PAPER") {
-                    ans = 2;
+                    ans = 1;
                 }
                 else if (playerSelection.toUpperCase() === "SCISSORS") {
-                    ans = 3;
+                    ans = 2;
                 }
                 else {
-                    return "Wrong Input!"
+                    return ["Wrong Input!" , 0]
                 }
                 const results = [[0,1,-1],[-1,0,1],[1,-1,0]]
+                console.log(computerSelection);
                 const result = results[computerSelection][ans]
-                
-                if (computerSelection === 1) {
+        
+                if (computerSelection === 0) {
                     res = "Rock"
                 }
-                else if (computerSelection === 2) {
+                else if (computerSelection === 1) {
                     res = "Paper"
                 }
                 else {
@@ -41,22 +50,49 @@
 
 
                 if (result === 1) {
-                    return `You won! You played ${playerSelection}, they played ${res}`
+                    return [`You won! You played ${playerSelection}, they played ${res}`, 1]
                 }
                 else if (result === 0) {
-                    return "You got the same answer"
+                    return ["You got the same answer", 0]
                 }
                 else {
-                    return `You lost. You played ${playerSelection}, they played ${res}`
+                    return [`You lost. You played ${playerSelection}, they played ${res}`, -1]
                 }
             }
 
-            function game() {
-                for (let i = 0; i < 5; i++ ) {
-                    console.log(playRound(prompt(), getComputerChoice()));
+            const btns = document.querySelectorAll('button');
+            btns.forEach(btn => btn.addEventListener('click', btnHandler));
+
+            function btnHandler(e) {
+                let res = getComputerChoice();
+                let ans = playRound(e.target.id, res);
+                let txt = document.querySelector('#current-result');
+                txt.textContent = ans[0];
+                let player = document.querySelector('#player-score');
+                let comp = document.querySelector('#computer-score');
+                if (ans[1] === 1) {
+                    player.textContent = (parseInt(player.innerHTML) + 1);
+                }
+                else if(ans[1] === -1) {
+                    comp.textContent = (parseInt(comp.innerHTML) + 1);
+                }
+
+                if (player.innerHTML === "5") {
+                    txt.textContent = "Player Wins!";
+                    btns.forEach(btn => btn.removeEventListener('click', btnHandler));
+                }
+                else if (comp.innerHTML === "5") {
+                    txt.textContent = "Computer Wins!";
+                    btns.forEach(btn => btn.removeEventListener('click', btnHandler));
                 }
             }
-            game();
+
+            // function game() {
+            //     for (let i = 0; i < 5; i++ ) {
+            //         console.log(playRound(prompt(), getComputerChoice()));
+            //     }
+            // }
+            // game();
         </script>
     </body>
 </html>
